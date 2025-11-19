@@ -1,0 +1,469 @@
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AcademyPro — Cursos Online</title>
+
+  
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#1A73E8;     
+      --primary-2:#185ABC;   
+      --accent:#F4B400;     
+      --bg:#F5F7FA;          
+      --card:#FFFFFF;
+      --muted:#6B7280;
+      --radius:12px;
+      --shadow: 0 8px 30px rgba(16,24,40,0.08);
+    }
+
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:#1f2937;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+
+    
+    header{background:linear-gradient(90deg,var(--primary),var(--primary-2));color:white;padding:14px 0;position:sticky;top:0;z-index:60;box-shadow:0 6px 30px rgba(16,24,40,0.08)}
+    .container{max-width:1150px;margin:0 auto;padding:0 20px}
+    .header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand img{height:48px;border-radius:8px;background:white;padding:6px}
+    nav.top-nav{display:flex;gap:14px;align-items:center}
+    .top-nav a{color:rgba(255,255,255,0.95);font-weight:600;font-size:14px;padding:8px 10px;border-radius:8px}
+    .top-nav a:hover{background:rgba(255,255,255,0.06)}
+
+    
+    .search {display:flex;align-items:center;background:rgba(255,255,255,0.12);padding:8px;border-radius:999px;gap:8px;min-width:300px}
+    .search input{border:0;background:transparent;color:white;outline:0;padding:8px 6px;width:100%}
+    .search button{background:var(--accent);border:none;padding:8px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+
+    
+    .hero{max-width:1150px;margin:28px auto;padding:36px 20px;border-radius:16px;color:white;background:linear-gradient(135deg,var(--primary),var(--primary-2));box-shadow:var(--shadow)}
+    .hero-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:center}
+    .hero h1{margin:0;font-size:36px;line-height:1.02}
+    .hero p{margin:10px 0 0;color:rgba(255,255,255,0.92)}
+    .hero .cta-row{margin-top:16px;display:flex;gap:12px}
+    .btn-primary{background:white;color:var(--primary);padding:10px 16px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.18);color:white;padding:10px 14px;border-radius:10px;cursor:pointer}
+
+    .hero-stats{background:rgba(255,255,255,0.08);padding:16px;border-radius:12px;color:white}
+
+  
+    .section{max-width:1150px;margin:28px auto;padding:0 20px}
+    .section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+    @media (max-width:980px){ .hero-grid{grid-template-columns:1fr} .grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){ .grid{grid-template-columns:1fr} .search{min-width:140px} }
+
+    .card{background:var(--card);border-radius:12px;padding:0;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .18s ease, box-shadow .18s ease}
+    .card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(16,24,40,0.12)}
+    .card .thumb{height:160px;overflow:hidden}
+    .card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .card .body{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .tag{display:inline-block;background:var(--primary-2);color:white;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:600}
+    .card h4{margin:6px 0 0;font-size:16px}
+    .meta{color:var(--muted);font-size:13px}
+    .price-row{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+    .price{font-weight:800;color:var(--primary)}
+    .add-btn{background:linear-gradient(90deg,var(--primary),var(--primary-2));color:white;padding:10px;border-radius:10px;border:0;cursor:pointer;font-weight:700;width:100%}
+
+    /* CART DRAWER */
+    .cart-drawer{position:fixed;right:20px;top:80px;width:360px;background:var(--card);border-radius:12px;box-shadow:0 30px 80px rgba(16,24,40,0.2);overflow:hidden;transform:translateY(-12px);opacity:0;pointer-events:none;transition:all .18s ease;z-index:90}
+    .cart-drawer.open{transform:translateY(0);opacity:1;pointer-events:auto}
+    .cart-header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--border)}
+    .cart-body{max-height:55vh;overflow:auto;padding:12px 16px}
+    .cart-item{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px dashed #f0f2f5}
+    .cart-item img{width:64px;height:48px;object-fit:cover;border-radius:8px}
+    .cart-item .info{flex:1}
+    .qty-controls{display:flex;gap:8px;align-items:center}
+    .qty-controls button{background:#f3f4f6;border:0;padding:6px 8px;border-radius:8px;cursor:pointer}
+    .cart-footer{padding:12px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:8px}
+
+    
+    .floating-cart{position:fixed;right:20px;bottom:20px;background:linear-gradient(90deg,var(--primary),var(--primary-2));color:white;padding:12px 16px;border-radius:999px;box-shadow:0 18px 40px rgba(16,24,40,0.14);cursor:pointer;z-index:88}
+
+    
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.5);display:none;align-items:center;justify-content:center;z-index:100}
+    .modal-backdrop.open{display:flex}
+    .modal{background:var(--card);max-width:680px;width:92%;border-radius:12px;padding:20px;box-shadow:var(--shadow);max-height:80vh;overflow:auto}
+    .modal h3{margin:0 0 8px}
+
+    
+    footer{background:#0F172A;color:white;padding:40px 0;margin-top:40px}
+    footer .foot-inner{max-width:1150px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;gap:20px}
+    footer a{color:rgba(255,255,255,0.9);text-decoration:none;font-weight:600}
+  </style>
+</head>
+
+<body>
+
+ 
+  <header>
+    <div class="container header-inner">
+      <div class="brand">
+        <img src="img/descarga.png"logo id="logo" onerror="this.style.display='none'">
+        <div>
+          <div style="font-weight:700;font-size:18px">AcademyPro</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.9)">Aprende. Mejora. Crece.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:14px">
+        <div class="search" role="search">
+          <input id="buscar" placeholder="Buscar curso, tema o instructor">
+          <button id="btnBuscar">Buscar</button>
+        </div>
+
+        <nav class="top-nav">
+          <a href="#" id="linkSoporte">Soporte</a>
+          <a href="#" id="linkTerms">Términos</a>
+        </nav>
+
+        <div>
+          <button class="btn-icon" id="openCartBtn" aria-label="Abrir carrito" style="background:transparent;border:0;color:white;font-weight:700;cursor:pointer">🛒 <span id="cartCount" style="background:#FF6B6B;color:white;padding:2px 8px;border-radius:999px;margin-left:8px;font-weight:700">0</span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <h1>Aprende algo nuevo y acelera tu carrera</h1>
+        <p>Más de <strong>20.000</strong> cursos prácticos — precios desde <strong>$15</strong>. Certificado incluido.</p>
+
+        <div class="cta-row">
+          <button class="btn-primary" id="verCursos">Ver cursos</button>
+          <button class="btn-outline" id="becomeTeacher">Conviértete en instructor</button>
+        </div>
+      </div>
+
+      <aside class="hero-stats">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div><strong>20,000+</strong> cursos</div>
+          <div><strong>5,000+</strong> instructores</div>
+          <div><strong>Acceso</strong> de por vida</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  
+  <section class="section">
+    <div class="section-title">
+      <h2 style="margin:0">Cursos destacados</h2>
+      <div style="color:var(--muted)">Ordenar por:
+        <select id="sortSelect" style="margin-left:8px;padding:6px;border-radius:8px;border:1px solid var(--border)">
+          <option value="popular">Más populares</option>
+          <option value="price-asc">Precio: bajo a alto</option>
+          <option value="price-desc">Precio: alto a bajo</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="grid" id="gridCursos">
+      
+    </div>
+  </section>
+
+  
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-header">
+      <div>
+        <strong>Tu carrito</strong>
+        <div style="font-size:13px;color:var(--muted)">Revisa tus cursos</div>
+      </div>
+      <div>
+        <button id="closeCart" style="background:transparent;border:0;cursor:pointer;font-size:18px;color:var(--muted)">✕</button>
+      </div>
+    </div>
+
+    <div class="cart-body" id="cartBody">
+    
+    </div>
+
+    <div class="cart-footer">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="color:var(--muted)">Total</div>
+        <div style="font-weight:800;font-size:18px" id="cartTotal">$0.00</div>
+      </div>
+
+      <div style="display:flex;gap:10px">
+        <button id="vaciarBtn" style="flex:1;background:#F3F4F6;border:0;padding:10px;border-radius:10px;cursor:pointer">Vaciar</button>
+        <button id="checkoutBtn" style="flex:1;background:var(--primary);color:white;border:0;padding:10px;border-radius:10px;cursor:pointer;font-weight:700">Pagar</button>
+      </div>
+    </div>
+  </aside>
+
+  
+  <div class="floating-cart" id="floatingCart">Ir al carrito 🛒 <span id="floatCount" style="background:#fff;color:var(--primary);padding:2px 8px;border-radius:999px;margin-left:8px;font-weight:700">0</span></div>
+
+ 
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true" id="modalContent">
+      
+    </div>
+  </div>
+
+  
+  <footer>
+    <div class="foot-inner">
+      <div>
+        <div style="font-weight:800;font-size:18px">AcademyPro</div>
+        <div style="color:var(--muted);margin-top:8px">Aprende a tu ritmo. Cursos certificados.</div>
+      </div>
+
+      <div style="display:flex;gap:18px;align-items:center">
+        <a href="#" id="fSupport">Soporte</a>
+        <a href="#" id="fTerms">Términos</a>
+        <a href="#" id="fContact">Contacto</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    
+    const cursosData = [
+      {id:1, nombre:"HTML, CSS y JavaScript", precio:15, img:"img/curso1.jpg", cat:"Programación"},
+      {id:2, nombre:"Cocina Vegetariana", precio:15, img:"img/curso2.jpg", cat:"Cocina"},
+      {id:3, nombre:"Guitarra para Principiantes", precio:15, img:"img/curso3.jpg", cat:"Música"},
+      {id:4, nombre:"Marketing Digital Completo", precio:20, img:"img/images.jpg", cat:"Marketing"},
+      {id:5, nombre:"Diseño con Canva Pro", precio:12, img:"img/curso7.jpg", cat:"Diseño"},
+      {id:6, nombre:"Ciberseguridad desde Cero", precio:25, img:"img/curso8.jpg", cat:"Tecnología"},
+      {id:7, nombre:"Fotografía Profesional", precio:18, img:"img/curso9.jpg", cat:"Fotografía"},
+      {id:8, nombre:"Excel Profesional", precio:10, img:"img/excel.jpg", cat:"Ofimática"},
+      {id:9, nombre:"Python para Principiantes", precio:15, img:"img/python.jpg", cat:"Programación"},
+      {id:10, nombre:"Diseño Web con Bootstrap", precio:20, img:"img/web.jpg", cat:"Programación"},
+      {id:11, nombre:"Edición en CapCut Avanzado", precio:14, img:"img/capcut.jpg", cat:"Edición"},
+      {id:12, nombre:"Ventas y Persuasión", precio:16, img:"img/ventas.jpg", cat:"Negocios"},
+      {id:13, nombre:"Machine Learning Básico", precio:28, img:"img/ml.jpg", cat:"IA"},
+      {id:14, nombre:"React desde Cero", precio:22, img:"img/react.jpg", cat:"Programación"},
+      {id:15, nombre:"UI/UX Profesional", precio:30,  img:"img/.jpg", cat:"Diseño"},
+      
+    ]
+
+    
+    const grid = document.getElementById('gridCursos');
+    function renderCursos(list = cursosData){
+      grid.innerHTML = '';
+      list.forEach(c => {
+        grid.innerHTML += `
+          <article class="card" data-id="${c.id}" data-price="${c.precio}">
+            <div class="thumb"><img src="${c.img}" alt="${c.nombre}" onerror="this.style.objectFit='contain';this.style.background='#f3f4f6'"></div>
+            <div class="body">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="tag">${c.cat}</div>
+                <div style="color:var(--muted);font-size:13px">⭐ 4.8</div>
+              </div>
+              <h4>${c.nombre}</h4>
+              <div class="meta">Instructor: <strong>Juan Pedro</strong></div>
+              <div class="price-row">
+                <div>
+                  <div style="color:var(--muted);font-size:13px;text-decoration:line-through">$${(c.precio*12).toFixed(0)}</div>
+                  <div class="price">$${c.precio.toFixed(2)}</div>
+                </div>
+                <button class="add-btn" data-id="${c.id}" aria-label="Agregar ${c.nombre}">Agregar</button>
+              </div>
+            </div>
+          </article>
+        `;
+      });
+    }
+    renderCursos();
+
+    
+    let carrito = JSON.parse(localStorage.getItem('carritoAcademy') || '[]');
+
+    const cartCountEl = document.getElementById('cartCount');
+    const floatCountEl = document.getElementById('floatCount');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartBody = document.getElementById('cartBody');
+    const cartTotalEl = document.getElementById('cartTotal');
+
+    function saveCart(){ localStorage.setItem('carritoAcademy', JSON.stringify(carrito)); }
+    function updateCounts(){ 
+      const qty = carrito.reduce((s,i)=>s+i.cantidad,0);
+      cartCountEl.textContent = qty;
+      floatCountEl.textContent = qty;
+    }
+
+    function renderCart(){
+      cartBody.innerHTML = '';
+      if(carrito.length === 0){
+        cartBody.innerHTML = '<div style="padding:18px;color:var(--muted)">Tu carrito está vacío</div>';
+        cartTotalEl.textContent = '$0.00';
+        updateCounts();
+        saveCart();
+        return;
+      }
+      carrito.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'cart-item';
+        el.innerHTML = `
+          <img src="${item.img}" alt="${item.nombre}" onerror="this.style.background='#f3f4f6'">
+          <div class="info">
+            <div style="font-weight:700">${item.nombre}</div>
+            <div style="color:var(--muted);font-size:13px">$${item.precio.toFixed(2)} • ${item.cat}</div>
+            <div class="qty-controls" style="margin-top:8px">
+              <button class="dec" data-id="${item.id}">-</button>
+              <div style="min-width:30px;text-align:center">${item.cantidad}</div>
+              <button class="inc" data-id="${item.id}">+</button>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-weight:800">$${(item.precio * item.cantidad).toFixed(2)}</div>
+            <button class="remove" data-id="${item.id}" style="background:transparent;border:0;color:var(--muted);cursor:pointer;margin-top:8px">Eliminar</button>
+          </div>
+        `;
+        cartBody.appendChild(el);
+      });
+
+      
+      const total = carrito.reduce((s,i)=> s + i.precio * i.cantidad, 0);
+      cartTotalEl.textContent = '$' + total.toFixed(2);
+
+      
+      cartBody.querySelectorAll('.inc').forEach(b=> b.addEventListener('click', e=>{
+        const id = parseInt(e.target.dataset.id);
+        carrito = carrito.map(i=> i.id === id ? {...i, cantidad: i.cantidad + 1} : i);
+        renderCart(); saveCart(); updateCounts();
+      }));
+      cartBody.querySelectorAll('.dec').forEach(b=> b.addEventListener('click', e=>{
+        const id = parseInt(e.target.dataset.id);
+        carrito = carrito.map(i=> i.id === id ? {...i, cantidad: Math.max(1, i.cantidad - 1)} : i);
+        renderCart(); saveCart(); updateCounts();
+      }));
+      cartBody.querySelectorAll('.remove').forEach(b=> b.addEventListener('click', e=>{
+        const id = parseInt(e.target.dataset.id);
+        carrito = carrito.filter(i=> i.id !== id);
+        renderCart(); saveCart(); updateCounts();
+      }));
+
+      updateCounts();
+      saveCart();
+    }
+
+    
+    document.addEventListener('click', e=>{
+      if(e.target.classList.contains('add-btn')){
+        e.preventDefault();
+        const id = parseInt(e.target.dataset.id);
+        const curso = cursosData.find(c=> c.id === id);
+        const exists = carrito.find(i=> i.id === id);
+        if(exists) exists.cantidad++;
+        else carrito.push({...curso, cantidad:1});
+        renderCart(); saveCart(); updateCounts();
+        openCart();
+      }
+    });
+
+    function openCart(){ cartDrawer.classList.add('open'); cartDrawer.setAttribute('aria-hidden','false'); }
+    function closeCart(){ cartDrawer.classList.remove('open'); cartDrawer.setAttribute('aria-hidden','true'); }
+
+    document.getElementById('openCartBtn').addEventListener('click', ()=> { openCart(); });
+    document.getElementById('closeCart').addEventListener('click', ()=> { closeCart(); });
+    document.getElementById('vaciarBtn').addEventListener('click', ()=> { carrito = []; renderCart(); saveCart(); updateCounts(); });
+
+    document.getElementById('checkoutBtn').addEventListener('click', ()=>{
+      if(carrito.length === 0){ alert('El carrito está vacío.'); return; }
+      
+      let resumen = 'Resumen:\\n';
+      carrito.forEach(i=> resumen += `${i.nombre} x${i.cantidad} -> $${(i.precio*i.cantidad).toFixed(2)}\\n`);
+      resumen += `\\nTotal: ${cartTotalEl.textContent}`;
+      alert(resumen + "\\n(En producción se redirige a pasarela de pago.)");
+    });
+
+    
+    renderCart();
+    updateCounts();
+
+    document.getElementById('floatingCart').addEventListener('click', ()=> openCart());
+
+    
+    document.getElementById('btnBuscar').addEventListener('click', ()=> {
+      const q = document.getElementById('buscar').value.trim().toLowerCase();
+      const filtered = cursosData.filter(c => c.nombre.toLowerCase().includes(q) || c.cat.toLowerCase().includes(q));
+      renderCursos(filtered);
+    });
+    document.getElementById('verCursos').addEventListener('click', ()=> window.scrollTo({top: document.querySelector('.section').offsetTop - 20, behavior:'smooth'}));
+    document.getElementById('sortSelect').addEventListener('change', (e)=>{
+      const v = e.target.value;
+      let sorted = [...cursosData];
+      if(v === 'price-asc') sorted.sort((a,b)=> a.precio - b.precio);
+      if(v === 'price-desc') sorted.sort((a,b)=> b.precio - a.precio);
+      renderCursos(sorted);
+    });
+
+    
+    function renderCursos(list){ renderCursos = null; /* placeholder to be defined below */ }
+   
+    (function defineRender(){
+      renderCursos = function(list){
+        
+        grid.innerHTML = '';
+        list.forEach(c => {
+          grid.innerHTML += `
+          <article class="card" data-id="${c.id}" data-price="${c.precio}">
+            <div class="thumb"><img src="${c.img}" alt="${c.nombre}" onerror="this.style.objectFit='contain';this.style.background='#f3f4f6'"></div>
+            <div class="body">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="tag">${c.cat}</div>
+                <div style="color:var(--muted);font-size:13px">⭐ 4.8</div>
+              </div>
+              <h4>${c.nombre}</h4>
+              <div class="meta">Instructor: <strong>Juan Pedro</strong></div>
+              <div class="price-row">
+                <div>
+                  <div style="color:var(--muted);font-size:13px;text-decoration:line-through">$${(c.precio*12).toFixed(0)}</div>
+                  <div class="price">$${c.precio.toFixed(2)}</div>
+                </div>
+                <button class="add-btn" data-id="${c.id}" aria-label="Agregar ${c.nombre}">Agregar</button>
+              </div>
+            </div>
+          </article>`;
+        });
+      };
+     
+      renderCursos(cursosData);
+    })();
+
+    
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalContent = document.getElementById('modalContent');
+
+    function openModal(html){
+      modalContent.innerHTML = html;
+      modalBackdrop.classList.add('open');
+    }
+    function closeModal(){ modalBackdrop.classList.remove('open'); modalContent.innerHTML = ''; }
+
+    document.getElementById('linkSoporte').addEventListener('click', (e)=>{
+      e.preventDefault();
+      openModal(`<h3>Soporte Técnico</h3>
+        <p>¿Tienes un problema? Escríbenos a <strong>soporte@academypro.com</strong> o llama al +57 300 000 0000.</p>
+        <p>Horario: Lun-Vie 8:00 - 18:00</p>
+        <button onclick="closeModal()" style="margin-top:12px;padding:8px 12px;border-radius:8px;border:0;background:var(--primary);color:white;cursor:pointer">Cerrar</button>`);
+    });
+
+    document.getElementById('linkTerms').addEventListener('click', (e)=>{
+      e.preventDefault();
+      openModal(`<h3>Términos y Condiciones</h3>
+        <p>Bienvenido a AcademyPro. Al usar nuestro sitio aceptas los términos y condiciones...</p>
+        <ol><li>Servicio educativo y contenido: descripción de uso.</li><li>Política de reembolso: 30 días.</li><li>Protección de datos: cumplimos normativa aplicable.</li></ol>
+        <button onclick="closeModal()" style="margin-top:12px;padding:8px 12px;border-radius:8px;border:0;background:var(--primary);color:white;cursor:pointer">Cerrar</button>`);
+    });
+
+    
+    document.getElementById('fSupport').addEventListener('click', (e)=> { e.preventDefault(); document.getElementById('linkSoporte').click(); });
+    document.getElementById('fTerms').addEventListener('click', (e)=> { e.preventDefault(); document.getElementById('linkTerms').click(); });
+
+    
+    modalBackdrop.addEventListener('click', (e)=> { if(e.target === modalBackdrop) closeModal(); });
+
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ closeCart(); closeModal(); } });
+    updateCounts();
+    renderCart();
+
+  </script>
+</body>
